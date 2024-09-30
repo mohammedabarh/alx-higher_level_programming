@@ -1,10 +1,20 @@
 #!/usr/bin/python3
 import sys
 
-def safe_print_integer_err(value):
+
+def safe_function(fct, *args):
+    """
+    Executes a function safely, catching exceptions and returning None if an error occurs.
+
+    Parameters:
+    fct (callable): The function to execute.
+    *args: Arguments to pass to the function.
+
+    Returns:
+    The result of the function or None if an exception occurred.
+    """
     try:
-        print("{:d}".format(value))  # Attempt to format and print the value as an integer
-        return True
-    except (ValueError, TypeError) as e:
-        print("Exception: {}".format(e), file=sys.stderr)  # Print the error message to stderr
-        return False
+        return fct(*args)
+    except Exception as e:  # Catching all exceptions
+        print("Exception: {}".format(e), file=sys.stderr)
+        return None
