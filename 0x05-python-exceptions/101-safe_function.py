@@ -1,15 +1,11 @@
-#!/usr/bin/python3
 import sys
-
 
 def safe_function(fct, *args):
     try:
-         # Execute the function with given arguments
-        res = fct(*args)
-    except BaseException as e:
-        # If any exception occurs, set result to None
-        res = None
+        # Try to execute the function with its arguments
+        return fct(*args)
+    except Exception as e:
+        # Print the exception message to stderr with "Exception: " prefix
         print("Exception: {}".format(e), file=sys.stderr)
-    finally:
-         # Always return the result (either the function's result or None)
-        return res
+        return None
+
