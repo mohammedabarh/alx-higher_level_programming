@@ -1,113 +1,59 @@
 #!/usr/bin/python3
-"""Defines a class Box"""
+"""Define a Rectangle class with width and height attributes."""
 
 
-class Box:
-    """
-    Class that defines properties of a box.
+class Rectangle:
+    """A class that defines a rectangle."""
 
-    Attributes:
-        length (int): Length of the box.
-        breadth (int): Breadth of the box.
-    """
-    
-    def __init__(self, length=0, breadth=0):
-        """Creates new instances of Box.
-
-        Args:
-            length (int, optional): Length of box. Defaults to 0.
-            breadth (int, optional): Breadth of box. Defaults to 0.
-        """
-        self.breadth = breadth
-        self.length = length
+    def __init__(self, width=0, height=0):
+        """Initialize the rectangle with width and height."""
+        self.width = width
+        self.height = height
 
     @property
-    def length(self):
-        """Length retriever.
+    def width(self):
+        """Retrieve the width of the rectangle."""
+        return self.__width
 
-        Returns:
-            int: The length of the box.
-        """
-        return self.__length
+    @width.setter
+    def width(self, value):
+        """Set the width of the rectangle."""
+        if not isinstance(value, int):
+            raise TypeError("width must be an integer")
+        if value < 0:
+            raise ValueError("width must be >= 0")
+        self.__width = value
 
     @property
-    def breadth(self):
-        """Breadth retriever.
+    def height(self):
+        """Retrieve the height of the rectangle."""
+        return self.__height
 
-        Returns:
-            int: The breadth of the box.
-        """
-        return self.__breadth
-
-    @length.setter
-    def length(self, value):
-        """Property setter for length of box.
-
-        Args:
-            value (int): Length of the box.
-
-        Raises:
-            TypeError: If length is not an integer.
-            ValueError: If length is less than 0.
-        """
+    @height.setter
+    def height(self, value):
+        """Set the height of the rectangle."""
         if not isinstance(value, int):
-            raise TypeError("length must be an integer")
+            raise TypeError("height must be an integer")
         if value < 0:
-            raise ValueError("length must be >= 0")
-        self.__length = value
-
-    @breadth.setter
-    def breadth(self, value):
-        """Property setter for breadth of box.
-
-        Args:
-            value (int): Breadth of the box.
-
-        Raises:
-            TypeError: If breadth is not an integer.
-            ValueError: If breadth is less than 0.
-        """
-        if not isinstance(value, int):
-            raise TypeError("breadth must be an integer")
-        if value < 0:
-            raise ValueError("breadth must be >= 0")
-        self.__breadth = value
+            raise ValueError("height must be >= 0")
+        self.__height = value
 
     def area(self):
-        """Calculates area of a box.
-
-        Returns:
-            int: Area of the box.
-        """
-        return self.__breadth * self.__length
+        """Return the area of the rectangle."""
+        return self.__width * self.__height
 
     def perimeter(self):
-        """Calculates perimeter of a box.
-
-        Returns:
-            int: Perimeter of the box.
-        """
-        if self.__breadth == 0 or self.__length == 0:
+        """Return the perimeter of the rectangle."""
+        if self.__width == 0 or self.__height == 0:
             return 0
-        return 2 * (self.__breadth + self.__length)
+        return 2 * (self.__width + self.__height)
 
     def __str__(self):
-        """Prints the box with the character #.
-
-        Returns:
-            str: Representation of the box.
-        """
-        box_representation = []
-
-        if self.__length == 0 or self.__breadth == 0:
+        """Return a string representation of the rectangle."""
+        if self.__width == 0 or self.__height == 0:
             return ""
+        return "\n".join(["#" * self.__width for _ in range(self.__height)])
 
-        for i in range(self.__breadth):
-            for j in range(self.__length):
-                box_representation.append("#")
-            box_representation.append("\n")
-
-        # Remove the last newline character
-        box_representation.pop()
-
-        return "".join(box_representation)
+    def __repr__(self):
+        """Return an informal string representation of the rectangle."""
+        return f"{self.__class__.__name__}({self.__width}, {self.__height})"
