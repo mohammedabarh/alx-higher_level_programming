@@ -1,22 +1,22 @@
 #!/usr/bin/python3
-"""Defines a class Box."""
+"""Defines a class Box"""
 
 
 class Box:
     """
-    Class that defines properties of a box: (based on 2-rectangle.py).
+    Class that defines properties of a box.
 
     Attributes:
-        length (int): length of the box.
-        breadth (int): breadth of the box.
+        length (int): Length of the box.
+        breadth (int): Breadth of the box.
     """
     
     def __init__(self, length=0, breadth=0):
         """Creates new instances of Box.
 
         Args:
-            length (int, optional): length of the box. Defaults to 0.
-            breadth (int, optional): breadth of the box. Defaults to 0.
+            length (int, optional): Length of box. Defaults to 0.
+            breadth (int, optional): Breadth of box. Defaults to 0.
         """
         self.breadth = breadth
         self.length = length
@@ -26,7 +26,7 @@ class Box:
         """Length retriever.
 
         Returns:
-            int: the length of the box.
+            int: The length of the box.
         """
         return self.__length
 
@@ -35,7 +35,7 @@ class Box:
         """Breadth retriever.
 
         Returns:
-            int: the breadth of the box.
+            int: The breadth of the box.
         """
         return self.__breadth
 
@@ -44,42 +44,40 @@ class Box:
         """Property setter for length of box.
 
         Args:
-            value (int): length of the box.
+            value (int): Length of the box.
 
         Raises:
-            TypeError: if length is not an integer.
-            ValueError: if length is less than 0.
+            TypeError: If length is not an integer.
+            ValueError: If length is less than 0.
         """
         if not isinstance(value, int):
             raise TypeError("length must be an integer")
-        elif value < 0:
+        if value < 0:
             raise ValueError("length must be >= 0")
-        else:
-            self.__length = value
+        self.__length = value
 
     @breadth.setter
     def breadth(self, value):
         """Property setter for breadth of box.
 
         Args:
-            value (int): breadth of the box.
+            value (int): Breadth of the box.
 
         Raises:
-            TypeError: if breadth is not an integer.
-            ValueError: if breadth is less than 0.
+            TypeError: If breadth is not an integer.
+            ValueError: If breadth is less than 0.
         """
         if not isinstance(value, int):
             raise TypeError("breadth must be an integer")
-        elif value < 0:
+        if value < 0:
             raise ValueError("breadth must be >= 0")
-        else:
-            self.__breadth = value
+        self.__breadth = value
 
     def area(self):
         """Calculates area of a box.
 
         Returns:
-            int: area.
+            int: Area of the box.
         """
         return self.__breadth * self.__length
 
@@ -87,18 +85,17 @@ class Box:
         """Calculates perimeter of a box.
 
         Returns:
-            int: perimeter.
+            int: Perimeter of the box.
         """
-        if self.__breadth == 0 or self.length == 0:
+        if self.__breadth == 0 or self.__length == 0:
             return 0
-        else:
-            return 2 * (self.__breadth + self.__length)
+        return 2 * (self.__breadth + self.__length)
 
     def __str__(self):
         """Prints the box with the character #.
 
         Returns:
-            str: the box.
+            str: Representation of the box.
         """
         box_representation = []
 
@@ -110,7 +107,7 @@ class Box:
                 box_representation.append("#")
             box_representation.append("\n")
 
-        # remove blank line
+        # Remove the last newline character
         box_representation.pop()
 
         return "".join(box_representation)
