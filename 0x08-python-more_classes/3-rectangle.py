@@ -30,15 +30,6 @@ class Rectangle:
         """
         return self.__width
 
-    @property
-    def height(self):
-        """Gets the height of the rectangle.
-
-        Returns:
-            int: The height of the rectangle.
-        """
-        return self.__height
-
     @width.setter
     def width(self, value):
         """Sets the width of the rectangle.
@@ -55,6 +46,15 @@ class Rectangle:
         if value < 0:
             raise ValueError("width must be >= 0")
         self.__width = value
+
+    @property
+    def height(self):
+        """Gets the height of the rectangle.
+
+        Returns:
+            int: The height of the rectangle.
+        """
+        return self.__height
 
     @height.setter
     def height(self, value):
@@ -79,7 +79,7 @@ class Rectangle:
         Returns:
             int: The area of the rectangle.
         """
-        return self.__height * self.__width
+        return self.__width * self.__height
 
     def perimeter(self):
         """Calculates the perimeter of the rectangle.
@@ -87,9 +87,9 @@ class Rectangle:
         Returns:
             int: The perimeter of the rectangle.
         """
-        if self.__height == 0 or self.__width == 0:
+        if self.__width == 0 or self.__height == 0:
             return 0
-        return 2 * (self.__height + self.__width)
+        return 2 * (self.__width + self.__height)
 
     def __str__(self):
         """Returns a string representation of the rectangle using '#' character.
@@ -99,9 +99,12 @@ class Rectangle:
         """
         if self.__width == 0 or self.__height == 0:
             return ""
+        return "\n".join(["#" * self.__width for _ in range(self.__height)])
 
-        rectangle_lines = []
-        for _ in range(self.__height):
-            rectangle_lines.append('#' * self.__width)
+    def __repr__(self):
+        """Returns a string representation of the rectangle for debugging.
 
-        return "\n".join(rectangle_lines)
+        Returns:
+            str: A string representing the rectangle object.
+        """
+        return f"<Rectangle width={self.__width} height={self.__height}>"
