@@ -1,11 +1,14 @@
 #!/usr/bin/python3
-"""Defines a locked class."""
+# Import the LockedClass from the specified module
+LockedClass = __import__('101-locked_class').LockedClass
 
+# Create an instance of LockedClass
+instance = LockedClass()
+# Set the first_name attribute
+instance.first_name = "John"
 
-class LockedClass:
-    """
-    Prevent the user from instantiating new LockedClass attributes
-    for anything but attributes called 'first_name'.
-    """
-
-    __slots__ = ["first_name"]
+# Attempt to set a last_name attribute, which should raise an exception
+try:
+    instance.last_name = "Snow"
+except Exception as error:
+    print("[{}] {}".format(error.__class__.__name__, error))
