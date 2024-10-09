@@ -1,0 +1,112 @@
+The ``0-add_integer`` module
+============================
+
+Using ``add_integer``
+---------------------
+
+Import the function from the module:
+
+    >>> add_integer = __import__('0-add_integer').add_integer
+
+Test a single integer argument:
+
+    >>> add_integer(2)
+    100
+
+Test a single integer argument with the default second:
+
+    >>> add_integer(0)
+    98
+
+Test with one float:
+
+    >>> add_integer(123.9)
+    221
+
+Test a negative float:
+
+    >>> add_integer(-95.5)
+    3
+
+Test with two integers:
+
+    >>> add_integer(10, 5)
+    15
+
+Test with large integers:
+
+    >>> add_integer(999999998, 999999999)
+    1999999997
+
+Test with positive and negative integers:
+
+    >>> add_integer(34263478, -89234582395)
+    -89200318917
+
+Test with negative and positive integers:
+
+    >>> add_integer(-13947692, 57234)
+    -13890458
+
+Test an integer combined with a float:
+
+    >>> add_integer(123, 7.987)
+    130
+
+Test a float combined with an integer:
+
+    >>> add_integer(234234.43545, 4352345)
+    4586579
+
+Test with two floats:
+
+    >>> add_integer(0.9, 0.9)
+    0
+
+Test adding infinity:
+
+    >>> add_integer(float('inf'), float('-inf'))
+    Traceback (most recent call last):
+    ...
+    OverflowError: cannot convert float infinity to integer
+
+Test adding NaN:
+
+    >>> add_integer(0, float('nan'))
+    Traceback (most recent call last):
+    ...
+    ValueError: cannot convert float NaN to integer
+
+Test with invalid first argument:
+
+    >>> add_integer("foo", 0)
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+Test with invalid second argument:
+
+    >>> add_integer(123123, [])
+    Traceback (most recent call last):
+        ...
+    TypeError: b must be an integer
+
+Test both arguments as invalid:
+
+    >>> add_integer(None, None)
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+Test with two strings:
+
+    >>> add_integer("foo", "bar")
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+Test for float overflow:
+    >>> add_integer(float('inf'), 0)
+    Traceback (most recent call last):
+    ...
+    OverflowError: cannot convert float infinity to integer
