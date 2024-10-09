@@ -1,15 +1,22 @@
 #!/usr/bin/python3
 """
-Module text_indentation
-Adds two new lines after a set of characters.
+Module for text_indentation function.
+
+This module provides a function to add two new lines
+after specific punctuation marks in a given text.
 """
 
 
 def text_indentation(text):
-    """Prints text with added two newlines
-    after each of these characters {'.', '?', ':'}.
     """
+    Print text with two newlines after '.', '?', and ':'.
 
+    Args:
+        text (str): The input text to be formatted.
+
+    Raises:
+        TypeError: If text is not a string.
+    """
     if type(text) is not str:
         raise TypeError("text must be a string")
 
