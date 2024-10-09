@@ -1,40 +1,25 @@
 #!/usr/bin/python3
-"""
-This module contains a function that indents text.
-"""
+"""Module for text_indentation method."""
+
 
 def text_indentation(text):
-    """
-    Prints a text with 2 new lines after each of these characters: ., ? and :
+    """Method for adding 2 new lines after '.?:' chars.
 
     Args:
-        text (str): The input text to be formatted.
+        text: The str text.
 
     Raises:
-        TypeError: If text is not a string.
-
-    Returns:
-        None
+        TypeError: If text is not a str.
     """
     if not isinstance(text, str):
         raise TypeError("text must be a string")
 
-    punctuation = ['.', '?', ':']
-    result = ""
-    skip_space = False
+    for delim in ".?:":
+        # print(delim, text.split(delim))
+        text = (delim + "\n\n").join(
+            [line.strip(" ") for line in text.split(delim)])
 
-    for char in text:
-        if skip_space and char == ' ':
-            continue
-        
-        result += char
-        skip_space = False
-
-        if char in punctuation:
-            result += "\n\n"
-            skip_space = True
-
-    print(result.strip())
+    print(text, end="")
 
 if __name__ == "__main__":
     import doctest

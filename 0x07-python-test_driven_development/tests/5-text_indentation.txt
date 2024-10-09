@@ -1,143 +1,135 @@
-# 5-text_indentation.txt
+The ``5-text_indentation`` module
+============================
 
-===============================
-How to Use 5-text_indentation.py
-===============================
+Using ``text_indentation``
+---------------------
 
-This module defines a function ``text_indentation(text)``.
-
-Usage
-=====
-
-``text_indentation(...)`` prints the given text with 2 new lines after each of
-these characters: `.`, `?`, and `:`.
-
-::
-
+Import module:
     >>> text_indentation = __import__('5-text_indentation').text_indentation
-    >>> text_indentation("Hello. How are you? I'm fine: thanks.")
+
+Test no delim:
+    >>> text_indentation("Hello Holberton")
+    Hello Holberton
+
+Test string with spaces:
+    >>> text_indentation("Holberton          ")
+    Holberton
+
+Test string with spaces 2:
+    >>> text_indentation("        Holberton")
+    Holberton
+    
+Test string with spaces 3:
+    >>> text_indentation("        Holberton          ")
+    Holberton
+    
+Test string with empty string:
+    >>> text_indentation("")
+
+Test string with empty string 2:
+    >>> text_indentation("      ")
+
+Test simple:
+    >>> text_indentation("Hello: Holberton")
+    Hello:
+    <BLANKLINE>
+    Holberton
+
+Test delims with spaces:
+    >>> text_indentation("      ?:  :  ")
+    ?
+    <BLANKLINE>
+    :
+    <BLANKLINE>
+    :
+    <BLANKLINE>
+
+Test newline:
+    >>> text_indentation("\n")
+    <BLANKLINE>
+
+Test newline 2:
+    >>> text_indentation("\n\n")
+    <BLANKLINE>
+    <BLANKLINE>
+
+Test newline 3:
+    >>> text_indentation("Hello\n\n")
+    Hello
+    <BLANKLINE>
+
+Test all delimeters:
+    >>> text_indentation("Hello: Holberton? school. fooo")
+    Hello:
+    <BLANKLINE>
+    Holberton?
+    <BLANKLINE>
+    school.
+    <BLANKLINE>
+    fooo
+
+Test all delimeters with spaces:
+    >>> text_indentation("Hello   :     Holberton    ?    school.    fooo")
+    Hello:
+    <BLANKLINE>
+    Holberton?
+    <BLANKLINE>
+    school.
+    <BLANKLINE>
+    fooo
+
+Test all delimeters with spaces at end:
+    >>> text_indentation("Hello   :     Holberton    ?    school.    fooo     ")
+    Hello:
+    <BLANKLINE>
+    Holberton?
+    <BLANKLINE>
+    school.
+    <BLANKLINE>
+    fooo
+
+Test just delimeters:
+    >>> text_indentation(".?:")
+    .
+    <BLANKLINE>
+    ?
+    <BLANKLINE>
+    :
+    <BLANKLINE>
+
+Test just delimeters 2:
+    >>> text_indentation("     ?   ")
+    ?
+    <BLANKLINE>
+
+Test nonindent inside indent
+    >>> text_indentation("?Hello.")
+    ?
+    <BLANKLINE>
     Hello.
     <BLANKLINE>
-    How are you?
+
+Test existing newlines:
+    >>> text_indentation("?\n\n.\n\n:")
+    ?
     <BLANKLINE>
-    I'm fine:
     <BLANKLINE>
-    thanks.
     <BLANKLINE>
-
-No spaces are printed at the beginning or end of each printed line:
-
-::
-
-    >>> text_indentation("  Spaces.  ")
-    Spaces.
+    .
     <BLANKLINE>
-
-::
-
-    >>> text_indentation("No punctuation")
-    No punctuation
-
-Multiple spaces between words are reduced to a single space:
-
-::
-
-    >>> text_indentation("Hello.   World?   ")
-    Hello.
     <BLANKLINE>
-    World?
+    <BLANKLINE>
+    :
     <BLANKLINE>
 
-Invalid Input
-=============
-
-The paramter ``text`` must be a string. Otherwise, a TypeError is raised.
-
-::
-
-    >>> text_indentation(7)
-    Traceback (most recent call last):
-    TypeError: text must be a string
-
-::
-
-    >>> text_indentation({"hello": "world"})
-    Traceback (most recent call last):
-    TypeError: text must be a string
-
-::
-
+Test none:
     >>> text_indentation(None)
     Traceback (most recent call last):
-    TypeError: text must be a string# 5-text_indentation.txt
-
-===============================
-How to Use 5-text_indentation.py
-===============================
-
-This module defines a function ``text_indentation(text)``.
-
-Usage
-=====
-
-``text_indentation(...)`` prints the given text with 2 new lines after each of
-these characters: `.`, `?`, and `:`.
-
-::
-
-    >>> text_indentation = __import__('5-text_indentation').text_indentation
-    >>> text_indentation("Hello. How are you? I'm fine: thanks.")
-    Hello.
-    <BLANKLINE>
-    How are you?
-    <BLANKLINE>
-    I'm fine:
-    <BLANKLINE>
-    thanks.
-    <BLANKLINE>
-
-No spaces are printed at the beginning or end of each printed line:
-
-::
-
-    >>> text_indentation("  Spaces.  ")
-    Spaces.
-    <BLANKLINE>
-
-::
-
-    >>> text_indentation("No punctuation")
-    No punctuation
-
-Multiple spaces between words are reduced to a single space:
-
-::
-
-    >>> text_indentation("Hello.   World?   ")
-    Hello.
-    <BLANKLINE>
-    World?
-    <BLANKLINE>
-
-Invalid Input
-=============
-
-The paramter ``text`` must be a string. Otherwise, a TypeError is raised.
-
-::
-
-    >>> text_indentation(7)
-    Traceback (most recent call last):
+    ...
     TypeError: text must be a string
 
-::
-
-    >>> text_indentation({"hello": "world"})
+Test number:
+    >>> text_indentation(33)
     Traceback (most recent call last):
-    TypeError: text must be a string
-
-::
-
-    >>> text_indentation(None)
-    Traceback (most recent call last):
+    ...
     TypeError: text must be a string
