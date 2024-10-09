@@ -4,13 +4,12 @@
 How to Use 5-text_indentation.py
 ===========================
 
-This module defines a text-indenting function ``text_indentation(text)``.
+This module defines a text-formatting function ``text_indentation(text)``.
 
 Usage
 =====
 
-Text is printed with two new lines after each of the characters ``.``, ``?``,
-and ``:``.
+The function prints the text with 2 new lines after each of these characters: ., ? and :
 
 ::
 
@@ -28,64 +27,45 @@ No spaces are printed at the beginning or end of lines:
 
 ::
 
-    >>> text_indentation("   Spaces.   ")
+    >>> text_indentation("   Spaces.   Are removed.   ")
     Spaces.
     <BLANKLINE>
+    Are removed.
 
 ::
 
-    >>> text_indentation("  Start.  End.  ")
-    Start.
-    <BLANKLINE>
-    End.
-    <BLANKLINE>
+    >>> text_indentation("No punctuation")
+    No punctuation
 
-New lines are only printed for the characters ``.``, ``?``, and ``:`` -
-text not ending with these characters is not ended with a new line:
+Multiple punctuation marks are handled correctly:
 
 ::
 
-    >>> text_indentation("No ending punctuation")
-    No ending punctuation
+    >>> text_indentation("Hello... World? Yes!!!")
+    Hello.
+    <BLANKLINE>
+    .
+    <BLANKLINE>
+    .
+    <BLANKLINE>
+    World?
+    <BLANKLINE>
+    Yes!!!
 
-New lines within a string are printed as normal:
+Invalid Input
+=============
+
+The parameter ``text`` must be a string. Otherwise, a TypeError is raised.
 
 ::
 
-    >>> text_indentation("Line 1\nLine 2")
-    Line 1
-    Line 2
-
-::
-
-    >>> text_indentation("\n\n\n We just printed three new lines.")
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-    We just printed three new lines.
-    <BLANKLINE>
-
-::
-
-    >>> text_indentation("A sneaky \n new line.")
-    A sneaky 
-    new line.
-    <BLANKLINE>
-
-Invalid Text
-============
-
-The paramter ``text`` must be a string. Otherwise, a TypeError is raised.
-
-::
-
-    >>> text_indentation(7)
+    >>> text_indentation(42)
     Traceback (most recent call last):
     TypeError: text must be a string
 
 ::
 
-    >>> text_indentation({"one": 1, "two": 2})
+    >>> text_indentation(["list", "is", "not", "string"])
     Traceback (most recent call last):
     TypeError: text must be a string
 
@@ -94,3 +74,58 @@ The paramter ``text`` must be a string. Otherwise, a TypeError is raised.
     >>> text_indentation(None)
     Traceback (most recent call last):
     TypeError: text must be a string
+
+At least one argument must be provided:
+
+::
+
+    >>> text_indentation()
+    Traceback (most recent call last):
+    TypeError: text_indentation() missing 1 required positional argument: 'text'
+
+Empty string input:
+
+::
+
+    >>> text_indentation("")
+
+Long text with multiple sentences:
+
+::
+
+    >>> text_indentation("""Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
+    ... Quonam modo? Utrum igitur tibi litteram videor an totas paginas commovere? \
+    ... Non autem hoc: igitur ne illud quidem. Fortasse id optimum, sed ubi illud: \
+    ... Plus semper voluptatis? Teneo, inquit, finem illi videri nihil dolere. \
+    ... Transfer idem ad modestiam vel temperantiam, quae est moderatio cupiditatum \
+    ... rationi oboediens. Si id dicis, vicimus. Inde sermone vario sex illa a Dipylo \
+    ... stadia confecimus. Sin aliud quid voles, postea. Quae animi affectio suum \
+    ... cuique tribuens atque hanc, quam dico. Utinam quidem dicerent alium alio \
+    ... beatiorem! Iam ruinas videres""")
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    <BLANKLINE>
+    Quonam modo?
+    <BLANKLINE>
+    Utrum igitur tibi litteram videor an totas paginas commovere?
+    <BLANKLINE>
+    Non autem hoc:
+    <BLANKLINE>
+    igitur ne illud quidem.
+    <BLANKLINE>
+    Fortasse id optimum, sed ubi illud:
+    <BLANKLINE>
+    Plus semper voluptatis?
+    <BLANKLINE>
+    Teneo, inquit, finem illi videri nihil dolere.
+    <BLANKLINE>
+    Transfer idem ad modestiam vel temperantiam, quae est moderatio cupiditatum rationi oboediens.
+    <BLANKLINE>
+    Si id dicis, vicimus.
+    <BLANKLINE>
+    Inde sermone vario sex illa a Dipylo stadia confecimus.
+    <BLANKLINE>
+    Sin aliud quid voles, postea.
+    <BLANKLINE>
+    Quae animi affectio suum cuique tribuens atque hanc, quam dico.
+    <BLANKLINE>
+    Utinam quidem dicerent alium alio beatiorem! Iam ruinas videres
