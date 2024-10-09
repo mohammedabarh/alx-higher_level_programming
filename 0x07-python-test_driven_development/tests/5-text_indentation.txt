@@ -1,136 +1,96 @@
-The ``5-text_indentation`` module
-============================
+# 5-text_indentation.txt
 
-Using ``text_indentation``
----------------------
+===========================
+How to Use 5-text_indentation.py
+===========================
 
-Import the function from the module:
+This module defines a text-indenting function ``text_indentation(text)``.
+
+Usage
+=====
+
+Text is printed with two new lines after each of the characters ``.``, ``?``,
+and ``:``.
+
+::
 
     >>> text_indentation = __import__('5-text_indentation').text_indentation
-
-Test with no delimiters:
-    >>> text_indentation("Hello Holberton")
-    Hello Holberton
-
-Test string with trailing spaces:
-    >>> text_indentation("Holberton          ")
-    Holberton
-
-Test string with leading spaces:
-    >>> text_indentation("        Holberton")
-    Holberton
-    
-Test string with both leading and trailing spaces:
-    >>> text_indentation("        Holberton          ")
-    Holberton
-    
-Test with an empty string:
-    >>> text_indentation("")
-
-Test with a string of spaces:
-    >>> text_indentation("      ")
-
-Test with a simple example:
-    >>> text_indentation("Hello: Holberton")
-    Hello:
-    <BLANKLINE>
-    Holberton
-
-Test delimiters with spaces:
-    >>> text_indentation("      ?:  :  ")
-    ?
-    <BLANKLINE>
-    :
-    <BLANKLINE>
-    :
-    <BLANKLINE>
-
-Test with a newline:
-    >>> text_indentation("\n")
-    <BLANKLINE>
-
-Test with multiple newlines:
-    >>> text_indentation("\n\n")
-    <BLANKLINE>
-    <BLANKLINE>
-
-Test newline after text:
-    >>> text_indentation("Hello\n\n")
-    Hello
-    <BLANKLINE>
-
-Test multiple delimiters:
-    >>> text_indentation("Hello: Holberton? school. fooo")
-    Hello:
-    <BLANKLINE>
-    Holberton?
-    <BLANKLINE>
-    school.
-    <BLANKLINE>
-    fooo
-
-Test multiple delimiters with spaces:
-    >>> text_indentation("Hello   :     Holberton    ?    school.    fooo")
-    Hello:
-    <BLANKLINE>
-    Holberton?
-    <BLANKLINE>
-    school.
-    <BLANKLINE>
-    fooo
-
-Test delimiters with spaces at the end:
-    >>> text_indentation("Hello   :     Holberton    ?    school.    fooo     ")
-    Hello:
-    <BLANKLINE>
-    Holberton?
-    <BLANKLINE>
-    school.
-    <BLANKLINE>
-    fooo
-
-Test only delimiters:
-    >>> text_indentation(".?:")
-    .
-    <BLANKLINE>
-    ?
-    <BLANKLINE>
-    :
-    <BLANKLINE>
-
-Test with just a delimiter and spaces:
-    >>> text_indentation("     ?   ")
-    ?
-    <BLANKLINE>
-
-Test non-indented text after a delimiter:
-    >>> text_indentation("?Hello.")
-    ?
-    <BLANKLINE>
+    >>> text_indentation("Hello. How are you? I'm fine: thanks.")
     Hello.
     <BLANKLINE>
+    How are you?
+    <BLANKLINE>
+    I'm fine:
+    <BLANKLINE>
+    thanks.
 
-Test with existing newlines:
-    >>> text_indentation("?\n\n.\n\n:")
-    ?
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-    .
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-    :
+No spaces are printed at the beginning or end of lines:
+
+::
+
+    >>> text_indentation("   Spaces.   ")
+    Spaces.
     <BLANKLINE>
 
-Test with None as input:
-    >>> text_indentation(None)
+::
+
+    >>> text_indentation("  Start.  End.  ")
+    Start.
+    <BLANKLINE>
+    End.
+    <BLANKLINE>
+
+New lines are only printed for the characters ``.``, ``?``, and ``:`` -
+text not ending with these characters is not ended with a new line:
+
+::
+
+    >>> text_indentation("No ending punctuation")
+    No ending punctuation
+
+New lines within a string are printed as normal:
+
+::
+
+    >>> text_indentation("Line 1\nLine 2")
+    Line 1
+    Line 2
+
+::
+
+    >>> text_indentation("\n\n\n We just printed three new lines.")
+    <BLANKLINE>
+    <BLANKLINE>
+    <BLANKLINE>
+    We just printed three new lines.
+    <BLANKLINE>
+
+::
+
+    >>> text_indentation("A sneaky \n new line.")
+    A sneaky 
+    new line.
+    <BLANKLINE>
+
+Invalid Text
+============
+
+The paramter ``text`` must be a string. Otherwise, a TypeError is raised.
+
+::
+
+    >>> text_indentation(7)
     Traceback (most recent call last):
-    ...
     TypeError: text must be a string
 
-Test with a number:
-    >>> text_indentation(33)
+::
+
+    >>> text_indentation({"one": 1, "two": 2})
     Traceback (most recent call last):
-    ...
+    TypeError: text must be a string
+
+::
+
+    >>> text_indentation(None)
+    Traceback (most recent call last):
     TypeError: text must be a string
