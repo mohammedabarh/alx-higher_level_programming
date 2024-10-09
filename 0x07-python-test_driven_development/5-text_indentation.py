@@ -1,74 +1,26 @@
 #!/usr/bin/python3
-"""Unittest for max_integer([..])"""
-import unittest
-max_integer = __import__('6-max_integer').max_integer
+"""Module containing the text_indentation function."""
 
 
-class TestMaxInteger(unittest.TestCase):
-    """Test cases for the max_integer function"""
+def text_indentation(text):
+    """Adds two new lines after '.', '?', and ':' characters.
 
-    def test_empty_list(self):
-        """Test with an empty list"""
-        self.assertIsNone(max_integer([]))
+    Args:
+        text (str): The input string to be processed.
 
-    def test_single_element(self):
-        """Test with a single element list"""
-        self.assertEqual(max_integer([5]), 5)
+    Raises:
+        TypeError: If the provided text is not of type str.
+    """
+    if not isinstance(text, str):
+        raise TypeError("text must be a string")
 
-    def test_positive_numbers(self):
-        """Test with positive numbers"""
-        self.assertEqual(max_integer([1, 2, 3, 4]), 4)
-        self.assertEqual(max_integer([1, 3, 4, 2]), 4)
+    for delim in ".?:":
+        # Split the text at each delimiter and strip leading spaces
+        text = (delim + "\n\n").join(
+            [line.strip(" ") for line in text.split(delim)])
 
-    def test_negative_numbers(self):
-        """Test with negative numbers"""
-        self.assertEqual(max_integer([-1, -2, -3, -4]), -1)
-        self.assertEqual(max_integer([-1, -3, -4, -2]), -1)
+    print(text, end="")
 
-    def test_mixed_numbers(self):
-        """Test with mixed positive and negative numbers"""
-        self.assertEqual(max_integer([-1, 2, -3, 4]), 4)
-        self.assertEqual(max_integer([-1, -2, 3, -4]), 3)
-
-    def test_duplicate_numbers(self):
-        """Test with duplicate numbers"""
-        self.assertEqual(max_integer([1, 1, 1, 1]), 1)
-        self.assertEqual(max_integer([1, 3, 3, 2]), 3)
-
-    def test_floats(self):
-        """Test with floating point numbers"""
-        self.assertEqual(max_integer([1.5, 2.5, 3.5, 4.5]), 4.5)
-        self.assertEqual(max_integer([-1.5, -2.5, -3.5, -4.5]), -1.5)
-
-    def test_ints_and_floats(self):
-        """Test with a mix of integers and floats"""
-        self.assertEqual(max_integer([1, 2.5, 3, 4.5]), 4.5)
-
-    def test_string(self):
-        """Test with a string"""
-        self.assertEqual(max_integer("Hello"), 'o')
-
-    def test_list_of_strings(self):
-        """Test with a list of strings"""
-        self.assertEqual(max_integer(["a", "b", "c", "d"]), 'd')
-
-    def test_empty_string(self):
-        """Test with an empty string"""
-        self.assertIsNone(max_integer(""))
-
-    def test_large_numbers(self):
-        """Test with large numbers"""
-        self.assertEqual(max_integer([1000000, 10000000, 100000000]), 100000000)
-
-    def test_bool_values(self):
-        """Test with boolean values"""
-        self.assertEqual(max_integer([True, False]), True)
-
-    def test_mixed_types(self):
-        """Test with mixed types (should raise TypeError)"""
-        with self.assertRaises(TypeError):
-            max_integer([1, "string", 2, 3])
-
-
-if __name__ == '__main__':
-    unittest.main()
+if __name__ == "__main__":
+    import doctest
+    doctest.testfile("tests/5-text_indentation.txt")
