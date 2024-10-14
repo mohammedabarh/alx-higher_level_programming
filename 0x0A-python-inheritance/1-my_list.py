@@ -5,7 +5,7 @@ A module that defines a MyList class inheriting from the built-in list.
 
 
 class MyList(list):
-    """A class that extends the built-in list type."""
+    """Class that inherits from list to add a sorting method."""
 
     def print_sorted(self):
         """Prints the list in ascending order."""
