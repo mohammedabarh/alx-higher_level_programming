@@ -3,6 +3,7 @@
 Defines a function to add an attribute to an object if possible.
 """
 
+
 def add_attribute(obj, attribute, value):
     """Adds a new attribute to an object if possible.
 
@@ -16,5 +17,5 @@ def add_attribute(obj, attribute, value):
     """
     if not hasattr(obj, '__dict__'):
         raise TypeError("can't add new attribute")
-    
+
     setattr(obj, attribute, value)
