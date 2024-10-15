@@ -1,16 +1,13 @@
 #!/usr/bin/python3
+"""Module for geometric operations."""
 
 class BaseGeometry:
-    """
-    A base class for geometry-related operations.
-    """
+    """A class to represent basic geometric shapes."""
 
     def area(self):
-        """
-        Calculate the area of the geometry.
+        """Calculate the area of the shape.
 
         Raises:
-            Exception: Always raises an Exception with the message
-                       "area() is not implemented"
+            Exception: If the area method is not implemented in a derived class.
         """
-        raise Exception("area() is not implemented")
+        raise Exception('area() is not implemented')
