@@ -1,0 +1,19 @@
+Test 1: Valid integer
+Input: bg.integer_validator("my_int", 12)
+Output: No output (valid input)
+
+Test 2: Valid integer
+Input: bg.integer_validator("width", 89)
+Output: No output (valid input)
+
+Test 3: Invalid type (string)
+Input: bg.integer_validator("name", "John")
+Expected Output: [TypeError] name must be an integer
+
+Test 4: Invalid value (zero)
+Input: bg.integer_validator("age", 0)
+Expected Output: [ValueError] age must be greater than 0
+
+Test 5: Invalid value (negative)
+Input: bg.integer_validator("distance", -4)
+Expected Output: [ValueError] distance must be greater than 0
