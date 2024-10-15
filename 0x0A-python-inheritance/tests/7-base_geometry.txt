@@ -1,19 +1,63 @@
-Test 1: Valid integer
-Input: bg.integer_validator("my_int", 12)
-Output: No output (valid input)
+The ``7-base_geometry`` module
+==============================
 
-Test 2: Valid integer
-Input: bg.integer_validator("width", 89)
-Output: No output (valid input)
+Using ``BaseGeometry``
+----------------------
 
-Test 3: Invalid type (string)
-Input: bg.integer_validator("name", "John")
-Expected Output: [TypeError] name must be an integer
+Import the class:
 
-Test 4: Invalid value (zero)
-Input: bg.integer_validator("age", 0)
-Expected Output: [ValueError] age must be greater than 0
+    >>> BaseGeometry = __import__('7-base_geometry').BaseGeometry
 
-Test 5: Invalid value (negative)
-Input: bg.integer_validator("distance", -4)
-Expected Output: [ValueError] distance must be greater than 0
+Now test it:
+
+    >>> bg = BaseGeometry()
+
+    >>> bg.integer_validator("my_int", 12)
+
+    >>> bg.integer_validator("width", 89)
+
+    >>> try:
+    ...     bg.integer_validator("name", "John")
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [TypeError] name must be an integer
+
+    >>> try:
+    ...     bg.integer_validator("age", 0)
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [ValueError] age must be greater than 0
+
+    >>> try:
+    ...     bg.integer_validator("distance", -4)
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [ValueError] distance must be greater than 0
+
+    >>> bg.area()
+    Traceback (most recent call last):
+    Exception: area() is not implemented
+
+    >>> bg.integer_validator("my_int", "12")
+    Traceback (most recent call last):
+    TypeError: my_int must be an integer
+
+    >>> bg.integer_validator("my_int", (4,))
+    Traceback (most recent call last):
+    TypeError: my_int must be an integer
+
+    >>> bg.integer_validator("my_int", [3])
+    Traceback (most recent call last):
+    TypeError: my_int must be an integer
+
+    >>> bg.integer_validator("my_int", True)
+    Traceback (most recent call last):
+    TypeError: my_int must be an integer
+
+    >>> bg.integer_validator("my_int", {3, 4})
+    Traceback (most recent call last):
+    TypeError: my_int must be an integer
+
+    >>> bg.integer_validator("my_int", None)
+    Traceback (most recent call last):
+    TypeError: my_int must be an integer
