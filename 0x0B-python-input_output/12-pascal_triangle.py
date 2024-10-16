@@ -1,31 +1,27 @@
 #!/usr/bin/python3
-"""Defines a function to generate Pascal's Triangle."""
+"""Module for student creation and management."""
 
 
-def pascal_triangle(n):
-    """Generate Pascal's Triangle of size n.
+class Student:
+    """Represents a student with a first name, last name, and age."""
 
-    Args:
-        n (int): The number of rows in Pascal's Triangle.
+    def __init__(self, first_name, last_name, age):
+        """Initialize a new Student instance."""
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
 
-    Returns:
-        list: A list of lists, where each inner list represents a row
-              of Pascal's Triangle.
-    """
-    if n <= 0:
-        return []
+    def to_json(self, attrs=None):
+        """Return a JSON representation of the Student instance.
 
-    triangles = [[1]]  # Start with the first row of the triangle.
+        If attrs is provided, only the attributes specified in attrs
+        will be included in the returned dictionary.
+        """
+        if attrs is None:
+            return self.__dict__
 
-    while len(triangles) < n:
-        tri = triangles[-1]  # Get the last row of the triangle.
-        tmp = [1]  # Initialize the new row with the first element '1'.
-
-        # Calculate the values for the new row.
-        for i in range(len(tri) - 1):
-            tmp.append(tri[i] + tri[i + 1])
-
-        tmp.append(1)  # End the new row with the last element '1'.
-        triangles.append(tmp)  # Append the new row to the triangle.
-
-    return triangles
+        new_dictionary = {}
+        for key, value in self.__dict__.items():
+            if key in attrs:
+                new_dictionary[key] = value
+        return new_dictionary
