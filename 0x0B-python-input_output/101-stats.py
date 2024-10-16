@@ -1,42 +1,43 @@
 #!/usr/bin/python3
+"""Script that reads stdin line by line and computes metrics"""
+
 import sys
-from collections import defaultdict
 
-def print_stats(total_size, status_counts):
+def print_stats(total_size, status_codes):
+    """Print accumulated statistics"""
     print(f"File size: {total_size}")
-    for status in sorted(status_counts.keys()):
-        if status_counts[status] > 0:
-            print(f"{status}: {status_counts[status]}")
-
-def parse_line(line):
-    try:
-        parts = line.split()
-        status_code = int(parts[-2])
-        file_size = int(parts[-1])
-        return status_code, file_size
-    except (ValueError, IndexError):
-        return None, None
+    for code in sorted(status_codes.keys()):
+        if status_codes[code] > 0:
+            print(f"{code}: {status_codes[code]}")
 
 def main():
     total_size = 0
+    status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
     line_count = 0
-    status_counts = defaultdict(int)
-    valid_status_codes = {200, 301, 400, 401, 403, 404, 405, 500}
 
     try:
         for line in sys.stdin:
-            status_code, file_size = parse_line(line)
-            if status_code is not None and file_size is not None:
-                total_size += file_size
-                if status_code in valid_status_codes:
-                    status_counts[status_code] += 1
-                line_count += 1
+            line_count += 1
+            parts = line.split()
+            
+            try:
+                size = int(parts[-1])
+                total_size += size
+            except (IndexError, ValueError):
+                pass
 
-                if line_count % 10 == 0:
-                    print_stats(total_size, status_counts)
+            try:
+                status = int(parts[-2])
+                if status in status_codes:
+                    status_codes[status] += 1
+            except (IndexError, ValueError):
+                pass
+
+            if line_count % 10 == 0:
+                print_stats(total_size, status_codes)
 
     except KeyboardInterrupt:
-        print_stats(total_size, status_counts)
+        print_stats(total_size, status_codes)
         raise
 
 if __name__ == "__main__":
