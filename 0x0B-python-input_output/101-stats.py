@@ -13,8 +13,8 @@ def print_stats(size, status_codes):
     """Print accumulated metrics.
 
     Args:
-        size (int): The total file size accumulated so far.
-        status_codes (dict): A dictionary containing counts of HTTP status codes.
+        size (int): The accumulated read file size.
+        status_codes (dict): The accumulated count of status codes.
     """
     print("File size: {}".format(size))
     for key in sorted(status_codes):
@@ -31,36 +31,30 @@ if __name__ == "__main__":
 
     try:
         for line in sys.stdin:
-            # Print stats after every ten lines
             if count == 10:
                 print_stats(size, status_codes)
                 count = 1
             else:
                 count += 1
 
-            # Split the line into components
             line = line.split()
 
-            # Try to accumulate the file size
             try:
                 size += int(line[-1])
             except (IndexError, ValueError):
                 pass
 
-            # Try to count the HTTP status codes
             try:
                 if line[-2] in valid_codes:
-                    if line[-2] not in status_codes:
+                    if status_codes.get(line[-2], -1) == -1:
                         status_codes[line[-2]] = 1
                     else:
                         status_codes[line[-2]] += 1
             except IndexError:
                 pass
 
-        # Print final stats after all input has been processed
         print_stats(size, status_codes)
 
     except KeyboardInterrupt:
-        # Print stats upon keyboard interruption
         print_stats(size, status_codes)
         raise
