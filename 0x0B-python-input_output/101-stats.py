@@ -10,16 +10,6 @@ def print_stats(total_size, status_codes):
         if status_codes[code] > 0:
             print(f"{code}: {status_codes[code]}")
 
-def parse_line(line):
-    """Parse a single line of log"""
-    try:
-        parts = line.split()
-        size = int(parts[-1])
-        status = int(parts[-2])
-        return size, status
-    except (ValueError, IndexError):
-        return None, None
-
 def main():
     total_size = 0
     status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
@@ -28,18 +18,22 @@ def main():
     try:
         for line in sys.stdin:
             line_count += 1
-            size, status = parse_line(line)
-            if size is not None:
+            try:
+                parts = line.split()
+                size = int(parts[-1])
+                status = int(parts[-2])
                 total_size += size
-            if status in status_codes:
-                status_codes[status] += 1
+                if status in status_codes:
+                    status_codes[status] += 1
+            except (ValueError, IndexError):
+                pass
 
             if line_count % 10 == 0:
                 print_stats(total_size, status_codes)
 
     except KeyboardInterrupt:
         print_stats(total_size, status_codes)
-        raise
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
