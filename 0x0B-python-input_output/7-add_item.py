@@ -1,22 +1,17 @@
 #!/usr/bin/python3
-"""7-add_item.py
-Adds all command line arguments to a list and saves them to a JSON file.
-"""
 
-import sys
-from load_from_json_file import load_from_json_file
-from save_to_json_file import save_to_json_file
+import json
 
-filename = 'add_item.json'
+def save_to_json_file(my_obj, filename):
+    """
+    Save an object to a JSON file.
 
-# Load existing items from the file, or initialize an empty list if the file doesn't exist.
-try:
-    items = load_from_json_file(filename)
-except FileNotFoundError:
-    items = []
+    Parameters:
+    my_obj: The object to be serialized to JSON.
+    filename: The name of the file where the JSON data will be saved.
 
-# Add command line arguments (excluding the script name) to the list.
-items.extend(sys.argv[1:])
-
-# Save the updated list back to the JSON file.
-save_to_json_file(items, filename)
+    This function opens the specified file in write mode and writes the JSON
+    representation of the given object to it, ensuring proper UTF-8 encoding.
+    """
+    with open(filename, "w", encoding="UTF-8") as f:
+        json.dump(my_obj, f)
