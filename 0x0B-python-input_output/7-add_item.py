@@ -1,17 +1,23 @@
 #!/usr/bin/python3
+import sys
+from os.path import exists
 
-import json
+# Import the functions from previous tasks
+save_to_json_file = __import__('5-save_to_json_file').save_to_json_file
+load_from_json_file = __import__('6-load_from_json_file').load_from_json_file
 
-def save_to_json_file(my_obj, filename):
-    """ 
-    Save an object to a JSON file.
+# Define the filename to store the data
+filename = "add_item.json"
 
-    Args:
-        my_obj: The object to serialize to JSON.
-        filename: The name of the file to save the JSON data.
+# Load existing items if the file exists, otherwise start with an empty list
+if exists(filename):
+    items = load_from_json_file(filename)
+else:
+    items = []
 
-    This function opens the specified file in write mode and saves the 
-    JSON representation of the object. The file is encoded in UTF-8.
-    """
-    with open(filename, "w", encoding="UTF-8") as f:
-        json.dump(my_obj, f)
+# Add command-line arguments to the list (excluding the script name)
+items.extend(sys.argv[1:])
+
+# Save the updated list back to the file
+save_to_json_file(items, filename)
+
