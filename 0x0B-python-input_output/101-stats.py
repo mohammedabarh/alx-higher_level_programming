@@ -1,41 +1,58 @@
 #!/usr/bin/python3
+"""Reads stdin line by line and computes metrics.
+
+After every 10 lines or on a keyboard interrupt (CTRL + C), it prints:
+- Total file size: sum of all previous file sizes
+- Number of occurrences of each status code in ascending order
+"""
+
 import sys
-from collections import defaultdict
 
-def print_stats(total_size, status_count):
-    print(f"File size: {total_size}")
-    for status in sorted(status_count.keys()):
-        if status_count[status] > 0:
-            print(f"{status}: {status_count[status]}")
+# Initialize metrics
+total_file_size = 0
+status_codes_count = {
+    "200": 0, "301": 0, "400": 0, "401": 0,
+    "403": 0, "404": 0, "405": 0, "500": 0
+}
 
-def main():
-    total_size = 0
-    status_count = defaultdict(int)
+
+def print_stats():
+    """Prints cumulative metrics: total file size and status code counts."""
+    print(f"File size: {total_file_size}")
+    for code in sorted(status_codes_count.keys()):
+        if status_codes_count[code] > 0:
+            print(f"{code}: {status_codes_count[code]}")
+
+
+if __name__ == "__main__":
     line_count = 0
 
     try:
+        # Read lines from standard input
         for line in sys.stdin:
-            line_count += 1
             parts = line.split()
-            if len(parts) < 6:
-                continue  # Skip invalid lines
 
-            # Extract the file size and status code
-            status_code = int(parts[-2])
-            file_size = int(parts[-1])
+            try:
+                # Extract file size and status code from the line
+                file_size = int(parts[-1])
+                status_code = parts[-2]
 
-            # Update total file size and status count
-            total_size += file_size
-            if status_code in [200, 301, 400, 401, 403, 404, 405, 500]:
-                status_count[status_code] += 1
+                # Update metrics
+                total_file_size += file_size
+                if status_code in status_codes_count:
+                    status_codes_count[status_code] += 1
+
+            except (IndexError, ValueError):
+                # Skip lines with invalid format
+                continue
 
             # Print stats every 10 lines
+            line_count += 1
             if line_count % 10 == 0:
-                print_stats(total_size, status_count)
+                print_stats()
 
     except KeyboardInterrupt:
-        print_stats(total_size, status_count)
-        sys.exit(0)
+        # Print final stats on keyboard interrupt (CTRL + C)
+        print_stats()
+        raise
 
-if __name__ == "__main__":
-    main()
