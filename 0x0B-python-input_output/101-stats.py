@@ -1,45 +1,43 @@
 #!/usr/bin/python3
-"""Reads from standard input and computes metrics.
-
-This script processes log entries from standard input, calculating and
-displaying the following statistics after every ten lines or upon
-keyboard interruption (CTRL + C):
-    - Total accumulated file size.
-    - Count of specified HTTP status codes.
-"""
 import sys
+from collections import defaultdict
 
-file_size = 0
-status_tally = {"200": 0, "301": 0, "400": 0, "401": 0,
-                "403": 0, "404": 0, "405": 0, "500": 0}
-i = 0
-try:
-    for line in sys.stdin:
-        tokens = line.split()
-        if len(tokens) >= 2:
-            a = i
-            if tokens[-2] in status_tally:
-                status_tally[tokens[-2]] += 1
-                i += 1
-            try:
-                file_size += int(tokens[-1])
-                if a == i:
-                    i += 1
-            except Exception:
-                if a == i:
-                    continue
-        if i % 10 == 0:
-            print("File size: {:d}".format(file_size))
-            for key, value in sorted(status_tally.items()):
-                if value:
-                    print("{:s}: {:d}".format(key, value))
-    print("File size: {:d}".format(file_size))
-    for key, value in sorted(status_tally.items()):
-        if value:
-            print("{:s}: {:d}".format(key, value))
+def print_stats(total_size, status_counts):
+    print(f"File size: {total_size}")
+    for status in sorted(status_counts.keys()):
+        if status_counts[status] > 0:
+            print(f"{status}: {status_counts[status]}")
 
-except KeyboardInterrupt:
-    print("File size: {:d}".format(file_size))
-    for key, value in sorted(status_tally.items()):
-        if value:
-            print("{:s}: {:d}".format(key, value))
+def parse_line(line):
+    try:
+        parts = line.split()
+        status_code = int(parts[-2])
+        file_size = int(parts[-1])
+        return status_code, file_size
+    except (ValueError, IndexError):
+        return None, None
+
+def main():
+    total_size = 0
+    line_count = 0
+    status_counts = defaultdict(int)
+    valid_status_codes = {200, 301, 400, 401, 403, 404, 405, 500}
+
+    try:
+        for line in sys.stdin:
+            status_code, file_size = parse_line(line)
+            if status_code is not None and file_size is not None:
+                total_size += file_size
+                if status_code in valid_status_codes:
+                    status_counts[status_code] += 1
+                line_count += 1
+
+                if line_count % 10 == 0:
+                    print_stats(total_size, status_counts)
+
+    except KeyboardInterrupt:
+        print_stats(total_size, status_counts)
+        raise
+
+if __name__ == "__main__":
+    main()
