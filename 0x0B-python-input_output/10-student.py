@@ -1,13 +1,12 @@
 #!/usr/bin/python3
-"""Module defining the Student class."""
+"""Defines a Student class."""
 
 
 class Student:
-    """Represents a student."""
+    """Represent a student."""
 
     def __init__(self, first_name, last_name, age):
-        """
-        Initializes a Student instance.
+        """Initialize a new Student.
 
         Args:
             first_name (str): The first name of the student.
@@ -19,16 +18,15 @@ class Student:
         self.age = age
 
     def to_json(self, attrs=None):
-        """
-        Retrieves a dictionary representation of a Student instance.
+        """Get a dictionary representation of the Student.
+
+        If attrs is a list of strings, represents only those attributes
+        included in the list.
 
         Args:
-            attrs (list): A list of strings representing attribute names.
-
-        Returns:
-            dict: A dictionary containing the Student's attributes.
+            attrs (list): (Optional) The attributes to represent.
         """
-        if attrs is None:
-            return self.__dict__
-        
-        return {attr: getattr(self, attr) for attr in attrs if hasattr(self, attr)}
+        if (isinstance(attrs, list) and
+                all(isinstance(ele, str) for ele in attrs)):
+            return {k: getattr(self, k) for k in attrs if hasattr(self, k)}
+        return self.__dict__
