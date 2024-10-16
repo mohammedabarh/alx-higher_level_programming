@@ -1,27 +1,28 @@
 #!/usr/bin/python3
-"""Module for student creation and management."""
+"""Module that defines a Pascal's Triangle function."""
 
 
-class Student:
-    """Represents a student with a first name, last name, and age."""
+def pascal_triangle(n):
+    """
+    Generate Pascal's Triangle of n rows.
 
-    def __init__(self, first_name, last_name, age):
-        """Initialize a new Student instance."""
-        self.first_name = first_name
-        self.last_name = last_name
-        self.age = age
+    Args:
+        n (int): The number of rows of the triangle.
 
-    def to_json(self, attrs=None):
-        """Return a JSON representation of the Student instance.
+    Returns:
+        list of lists: A list of lists of integers representing Pascal's triangle.
+        Returns an empty list if n <= 0.
+    """
+    if n <= 0:
+        return []
 
-        If attrs is provided, only the attributes specified in attrs
-        will be included in the returned dictionary.
-        """
-        if attrs is None:
-            return self.__dict__
+    triangle = [[1]]
 
-        new_dictionary = {}
-        for key, value in self.__dict__.items():
-            if key in attrs:
-                new_dictionary[key] = value
-        return new_dictionary
+    for i in range(1, n):
+        row = [1]
+        for j in range(1, i):
+            row.append(triangle[i-1][j-1] + triangle[i-1][j])
+        row.append(1)
+        triangle.append(row)
+
+    return triangle
