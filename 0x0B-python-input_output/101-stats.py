@@ -1,6 +1,13 @@
 #!/usr/bin/python3
-""" Reads from standard input and computes metrics"""
+"""
+Reads log entries from standard input and computes various metrics.
 
+This script processes HTTP log entries, extracting and counting the 
+occurrences of specific status codes. It also calculates the total 
+size of the responses. The metrics are printed to standard output 
+every 10 lines processed, including the total file size and the 
+count of each relevant status code.
+"""
 if __name__ == "__main__":
     import sys
 
