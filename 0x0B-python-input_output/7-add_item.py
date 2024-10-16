@@ -3,15 +3,15 @@
 import json
 
 def save_to_json_file(my_obj, filename):
-    """
+    """ 
     Save an object to a JSON file.
 
-    Parameters:
-    my_obj: The object to be serialized to JSON.
-    filename: The name of the file where the JSON data will be saved.
+    Args:
+        my_obj: The object to serialize to JSON.
+        filename: The name of the file to save the JSON data.
 
-    This function opens the specified file in write mode and writes the JSON
-    representation of the given object to it, ensuring proper UTF-8 encoding.
+    This function opens the specified file in write mode and saves the 
+    JSON representation of the object. The file is encoded in UTF-8.
     """
     with open(filename, "w", encoding="UTF-8") as f:
         json.dump(my_obj, f)
