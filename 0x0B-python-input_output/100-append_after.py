@@ -1,31 +1,25 @@
 #!/usr/bin/python3
-"""Module for student creation and management."""
+"""Module for appending text after specific string in a file."""
 
 
-class Student:
-    """Represents a student with a first name, last name, and age."""
-    
-    def __init__(self, first_name, last_name, age):
-        """Initialize a new student instance."""
-        self.first_name = first_name
-        self.last_name = last_name
-        self.age = age
+def append_after(filename="", search_string="", new_string=""):
+    """
+    Inserts a line of text to a file after each line containing a specific string.
 
-    def to_json(self, attrs=None):
-        """Return a dictionary representation of the Student instance.
-        
-        If attrs is provided, only the attributes specified in attrs
-        will be included in the returned dictionary.
-        """
-        if attrs is None:
-            return self.__dict__
-        new_dictionary = {}
-        for key, value in self.__dict__.items():
-            if key in attrs:
-                new_dictionary[key] = value
-        return new_dictionary
+    Args:
+        filename (str): The name of the file.
+        search_string (str): The string to search for in each line.
+        new_string (str): The string to insert after the line containing the search string.
+    """
+    with open(filename, 'r') as file:
+        lines = file.readlines()
 
-    def reload_from_json(self, json):
-        """Update the Student instance with values from a JSON dictionary."""
-        for key, value in json.items():
-            setattr(self, key, value)
+    with open(filename, 'w') as file:
+        for line in lines:
+            file.write(line)
+            if search_string in line:
+                file.write(new_string)
+
+
+if __name__ == "__main__":
+    append_after("append_after_100.txt", "Python", "\"C is fun!\"\n")

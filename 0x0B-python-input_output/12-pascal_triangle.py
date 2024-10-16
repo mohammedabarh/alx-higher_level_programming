@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Module containing the function pascal_triangle"""
+"""Module for student creation and management."""
 
 
 def pascal_triangle(n):
