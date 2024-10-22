@@ -1,188 +1,208 @@
 #!/usr/bin/python3
-"""Unit tests for the Rectangle class."""
+"""Unittest for Rectangle class"""
 import unittest
-from models.base import Base
 from models.rectangle import Rectangle
-from random import randrange
-from contextlib import redirect_stdout
+from models.base import Base
 import io
+import sys
 
 
 class TestRectangle(unittest.TestCase):
-    """Test suite for the Rectangle class."""
+    """Test cases for Rectangle class"""
 
     def setUp(self):
-        """Reset the number of Base objects before each test."""
+        """Reset Base._nb_objects before each test"""
         Base._Base__nb_objects = 0
 
-    def tearDown(self):
-        """Clean up actions after each test."""
-        pass
+    def test_rectangle_is_base(self):
+        """Test if Rectangle is an instance of Base"""
+        self.assertIsInstance(Rectangle(10, 2), Base)
 
-    # ----------------- Tests for Rectangle class structure ------------------------
-
-    def test_A_class(self):
-        """Verify the Rectangle class type."""
-        self.assertEqual(str(Rectangle),
-                         "<class 'models.rectangle.Rectangle'>")
-
-    def test_B_inheritance(self):
-        """Check if Rectangle is a subclass of Base."""
-        self.assertTrue(issubclass(Rectangle, Base))
-
-    def test_C_constructor_no_args(self):
-        """Ensure constructor raises an error with missing arguments."""
-        with self.assertRaises(TypeError) as e:
+    def test_no_args(self):
+        """Test Rectangle with no arguments"""
+        with self.assertRaises(TypeError):
             Rectangle()
-        expected = "__init__() missing 2 required positional arguments: 'width' and 'height'"
-        self.assertEqual(str(e.exception), expected)
 
-    def test_C_constructor_many_args(self):
-        """Ensure constructor raises an error with too many arguments."""
-        with self.assertRaises(TypeError) as e:
-            Rectangle(1, 2, 3, 4, 5, 6)
-        expected = "__init__() takes from 3 to 6 positional arguments but 7 were given"
-        self.assertEqual(str(e.exception), expected)
-
-    def test_C_constructor_one_arg(self):
-        """Ensure constructor raises an error with only one argument."""
-        with self.assertRaises(TypeError) as e:
+    def test_one_arg(self):
+        """Test Rectangle with one argument"""
+        with self.assertRaises(TypeError):
             Rectangle(1)
-        expected = "__init__() missing 1 required positional argument: 'height'"
-        self.assertEqual(str(e.exception), expected)
 
-    # ----------------- Instantiation tests ------------------------
+    def test_two_args(self):
+        """Test Rectangle with two arguments"""
+        r1 = Rectangle(10, 2)
+        r2 = Rectangle(2, 10)
+        self.assertEqual(r1.id, r2.id - 1)
 
-    def test_D_instantiation(self):
-        """Test Rectangle instantiation with valid and invalid values."""
-        r = Rectangle(10, 20)
-        self.assertEqual(str(type(r)), "<class 'models.rectangle.Rectangle'>")
-        self.assertTrue(isinstance(r, Base))
-        expected_dict = {
-            '_Rectangle__height': 20, '_Rectangle__width': 10,
-            '_Rectangle__x': 0, '_Rectangle__y': 0, 'id': 1
-        }
-        self.assertDictEqual(r.__dict__, expected_dict)
+    def test_three_args(self):
+        """Test Rectangle with three arguments"""
+        r1 = Rectangle(2, 2, 4)
+        r2 = Rectangle(4, 4, 2)
+        self.assertEqual(r1.id, r2.id - 1)
 
-        # Test invalid types
-        with self.assertRaises(TypeError) as e:
-            Rectangle("1", 2)
-        self.assertEqual(str(e.exception), "width must be an integer")
+    def test_four_args(self):
+        """Test Rectangle with four arguments"""
+        r1 = Rectangle(1, 2, 3, 4)
+        r2 = Rectangle(4, 3, 2, 1)
+        self.assertEqual(r1.id, r2.id - 1)
 
-        with self.assertRaises(TypeError) as e:
-            Rectangle(1, "2")
-        self.assertEqual(str(e.exception), "height must be an integer")
+    def test_five_args(self):
+        """Test Rectangle with five arguments"""
+        self.assertEqual(7, Rectangle(10, 2, 0, 0, 7).id)
 
-        # Test invalid values
-        with self.assertRaises(ValueError) as e:
+    def test_more_than_five_args(self):
+        """Test Rectangle with more than five arguments"""
+        with self.assertRaises(TypeError):
+            Rectangle(1, 2, 3, 4, 5, 6)
+
+    def test_width_private(self):
+        """Test if width is private"""
+        with self.assertRaises(AttributeError):
+            print(Rectangle(5, 5, 0, 0, 1).__width)
+
+    def test_height_private(self):
+        """Test if height is private"""
+        with self.assertRaises(AttributeError):
+            print(Rectangle(5, 5, 0, 0, 1).__height)
+
+    def test_x_private(self):
+        """Test if x is private"""
+        with self.assertRaises(AttributeError):
+            print(Rectangle(5, 5, 0, 0, 1).__x)
+
+    def test_y_private(self):
+        """Test if y is private"""
+        with self.assertRaises(AttributeError):
+            print(Rectangle(5, 5, 0, 0, 1).__y)
+
+    def test_width_getter(self):
+        """Test width getter"""
+        r = Rectangle(5, 7, 7, 5, 1)
+        self.assertEqual(5, r.width)
+
+    def test_width_setter(self):
+        """Test width setter"""
+        r = Rectangle(5, 7, 7, 5, 1)
+        r.width = 10
+        self.assertEqual(10, r.width)
+
+    def test_height_getter(self):
+        """Test height getter"""
+        r = Rectangle(5, 7, 7, 5, 1)
+        self.assertEqual(7, r.height)
+
+    def test_height_setter(self):
+        """Test height setter"""
+        r = Rectangle(5, 7, 7, 5, 1)
+        r.height = 10
+        self.assertEqual(10, r.height)
+
+    def test_x_getter(self):
+        """Test x getter"""
+        r = Rectangle(5, 7, 7, 5, 1)
+        self.assertEqual(7, r.x)
+
+    def test_x_setter(self):
+        """Test x setter"""
+        r = Rectangle(5, 7, 7, 5, 1)
+        r.x = 10
+        self.assertEqual(10, r.x)
+
+    def test_y_getter(self):
+        """Test y getter"""
+        r = Rectangle(5, 7, 7, 5, 1)
+        self.assertEqual(5, r.y)
+
+    def test_y_setter(self):
+        """Test y setter"""
+        r = Rectangle(5, 7, 7, 5, 1)
+        r.y = 10
+        self.assertEqual(10, r.y)
+
+    def test_invalid_width_type(self):
+        """Test invalid width type"""
+        with self.assertRaisesRegex(TypeError, "width must be an integer"):
+            Rectangle("invalid", 2)
+
+    def test_invalid_height_type(self):
+        """Test invalid height type"""
+        with self.assertRaisesRegex(TypeError, "height must be an integer"):
+            Rectangle(2, "invalid")
+
+    def test_invalid_x_type(self):
+        """Test invalid x type"""
+        with self.assertRaisesRegex(TypeError, "x must be an integer"):
+            Rectangle(1, 2, "invalid", 2)
+
+    def test_invalid_y_type(self):
+        """Test invalid y type"""
+        with self.assertRaisesRegex(TypeError, "y must be an integer"):
+            Rectangle(1, 2, 2, "invalid")
+
+    def test_invalid_width_value(self):
+        """Test invalid width value"""
+        with self.assertRaisesRegex(ValueError, "width must be > 0"):
             Rectangle(-1, 2)
-        self.assertEqual(str(e.exception), "width must be > 0")
 
-        with self.assertRaises(ValueError) as e:
+    def test_invalid_height_value(self):
+        """Test invalid height value"""
+        with self.assertRaisesRegex(ValueError, "height must be > 0"):
             Rectangle(1, -2)
-        self.assertEqual(str(e.exception), "height must be > 0")
 
-    def test_D_instantiation_positional(self):
-        """Test Rectangle instantiation with positional arguments."""
-        r = Rectangle(5, 10, 15, 20)
-        expected_dict = {
-            '_Rectangle__height': 10, '_Rectangle__width': 5,
-            '_Rectangle__x': 15, '_Rectangle__y': 20, 'id': 1
-        }
-        self.assertEqual(r.__dict__, expected_dict)
+    def test_invalid_x_value(self):
+        """Test invalid x value"""
+        with self.assertRaisesRegex(ValueError, "x must be >= 0"):
+            Rectangle(1, 2, -1, 2)
 
-    def test_D_instantiation_keyword(self):
-        """Test Rectangle instantiation with keyword arguments."""
-        r = Rectangle(100, 200, id=421, y=99, x=101)
-        expected_dict = {
-            '_Rectangle__height': 200, '_Rectangle__width': 100,
-            '_Rectangle__x': 101, '_Rectangle__y': 99, 'id': 421
-        }
-        self.assertEqual(r.__dict__, expected_dict)
+    def test_invalid_y_value(self):
+        """Test invalid y value"""
+        with self.assertRaisesRegex(ValueError, "y must be >= 0"):
+            Rectangle(1, 2, 2, -1)
 
-    def test_E_id_inherited(self):
-        """Verify id inheritance from the Base class."""
-        Base._Base__nb_objects = 98
-        r = Rectangle(2, 4)
-        self.assertEqual(r.id, 99)
-
-    # ----------------- Property validation tests ------------------------
-
-    def test_F_properties(self):
-        """Test the getters and setters of Rectangle properties."""
-        r = Rectangle(5, 9)
-        r.width = 100
-        r.height = 101
-        r.x = 102
-        r.y = 103
-        expected_dict = {
-            '_Rectangle__height': 101, '_Rectangle__width': 100,
-            '_Rectangle__x': 102, '_Rectangle__y': 103, 'id': 1
-        }
-        self.assertEqual(r.__dict__, expected_dict)
-
-    def test_G_validate_type(self):
-        """Test validation for property types."""
-        r = Rectangle(1, 2)
-        invalid_values = (3.14, "str", (2,), [4], {5}, None)
-        for attr in ["x", "y", "width", "height"]:
-            for value in invalid_values:
-                with self.assertRaises(TypeError) as e:
-                    setattr(r, attr, value)
-                self.assertIn(f"{attr} must be an integer", str(e.exception))
-
-    def test_G_validate_value_negative(self):
-        """Test validation for negative property values."""
-        r = Rectangle(1, 2)
-        for attr in ["width", "height"]:
-            with self.assertRaises(ValueError) as e:
-                setattr(r, attr, -1)
-            self.assertIn(f"{attr} must be > 0", str(e.exception))
-
-    # ----------------- Area and display method tests ------------------------
-
-    def test_I_area(self):
-        """Test the area() method."""
-        r = Rectangle(5, 6)
-        self.assertEqual(r.area(), 30)
-
-    def test_J_display_simple(self):
-        """Test display() method output."""
+    def test_area(self):
+        """Test area calculation"""
         r = Rectangle(3, 2)
-        f = io.StringIO()
-        with redirect_stdout(f):
-            r.display()
-        expected_output = "###\n###\n"
-        self.assertEqual(f.getvalue(), expected_output)
+        self.assertEqual(6, r.area())
 
-    # ----------------- __str__ and update method tests ------------------------
+    def test_area_large(self):
+        """Test area calculation with large numbers"""
+        r = Rectangle(999999999999999, 999999999999999999)
+        self.assertEqual(999999999999998999000000000000001, r.area())
 
-    def test_K_str(self):
-        """Test the __str__() method."""
-        r = Rectangle(3, 4, 5, 6)
-        self.assertEqual(str(r), "[Rectangle] (1) 5/6 - 3/4")
+    def test_display(self):
+        """Test display method"""
+        r = Rectangle(2, 3, 2, 2)
+        expected_output = "\n\n  ##\n  ##\n  ##\n"
+        captured_output = io.StringIO()
+        sys.stdout = captured_output
+        r.display()
+        sys.stdout = sys.__stdout__
+        self.assertEqual(expected_output, captured_output.getvalue())
 
-    def test_L_update_args(self):
-        """Test the update() method with positional arguments."""
-        r = Rectangle(5, 2)
-        r.update(10, 8, 7, 6, 5)
-        expected_dict = {
-            '_Rectangle__width': 8, '_Rectangle__height': 7,
-            '_Rectangle__x': 6, '_Rectangle__y': 5, 'id': 10
-        }
-        self.assertEqual(r.__dict__, expected_dict)
+    def test_str(self):
+        """Test __str__ method"""
+        r = Rectangle(4, 6, 2, 1, 12)
+        expected = "[Rectangle] (12) 2/1 - 4/6"
+        self.assertEqual(expected, str(r))
 
-    def test_L_update_kwargs(self):
-        """Test the update() method with keyword arguments."""
-        r = Rectangle(5, 2)
-        r.update(width=8, height=7, x=6, y=5, id=10)
-        expected_dict = {
-            '_Rectangle__width': 8, '_Rectangle__height': 7,
-            '_Rectangle__x': 6, '_Rectangle__y': 5, 'id': 10
-        }
-        self.assertEqual(r.__dict__, expected_dict)
+    def test_update_args(self):
+        """Test update method with *args"""
+        r = Rectangle(10, 10, 10, 10)
+        r.update(89, 2, 3, 4, 5)
+        self.assertEqual("[Rectangle] (89) 4/5 - 2/3", str(r))
 
-# Run the test cases if the script is executed directly
+    def test_update_kwargs(self):
+        """Test update method with **kwargs"""
+        r = Rectangle(10, 10, 10, 10)
+        r.update(height=1, width=2, y=3, x=4, id=89)
+        self.assertEqual("[Rectangle] (89) 4/3 - 2/1", str(r))
+
+    def test_to_dictionary(self):
+        """Test to_dictionary method"""
+        r = Rectangle(10, 2, 1, 9, 1)
+        expected = {'id': 1, 'width': 10, 'height': 2, 'x': 1, 'y': 9}
+        self.assertDictEqual(expected, r.to_dictionary())
+
+
 if __name__ == "__main__":
     unittest.main()
-
