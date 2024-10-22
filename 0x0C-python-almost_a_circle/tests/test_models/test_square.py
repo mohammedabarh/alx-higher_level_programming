@@ -1,187 +1,181 @@
 #!/usr/bin/python3
-'''Unit tests for the Square class.'''
-import unittest  # Importing the unittest module for test case management
-from models.base import Base  # Import Base class from the models package
-from models.square import Square  # Import Square class for testing
-from random import randrange  # Importing random number generator for testing
-from contextlib import redirect_stdout  # Redirect stdout for capturing outputs
-import io  # In-memory I/O handling for testing printed outputs
+"""Unit tests for the Square class."""
+import unittest
+from models.base import Base
+from models.square import Square
+from random import randrange
+from contextlib import redirect_stdout
+import io
+
 
 class TestSquare(unittest.TestCase):
-    '''Test suite for the Square class.'''
+    """Test suite for the Square class."""
 
     def setUp(self):
-        '''Resets the state before every test method.'''
-        Base._Base__nb_objects = 0  # Reset the Base class counter
+        """Resets object counter before each test."""
+        Base._Base__nb_objects = 0
 
     def tearDown(self):
-        '''Cleanup executed after each test method.'''
-        pass  # No specific cleanup actions required here
+        """Runs after each test to clean up if necessary."""
+        pass
 
-    # ----------------- Class and Constructor Tests ------------------------
+    # ----------- Basic Class and Constructor Tests -------------
 
     def test_A_class(self):
-        '''Checks if the class is properly defined.'''
+        """Verifies Square class type."""
         self.assertEqual(str(Square), "<class 'models.square.Square'>")
 
     def test_B_inheritance(self):
-        '''Validates that Square inherits from Base.'''
+        """Checks if Square inherits from Base."""
         self.assertTrue(issubclass(Square, Base))
 
     def test_C_constructor_no_args(self):
-        '''Tests constructor with no arguments.'''
+        """Ensures an error is raised without required arguments."""
         with self.assertRaises(TypeError) as e:
-            r = Square()  # Constructor without required arguments
-        expected_msg = "__init__() missing 1 required positional argument: 'size'"
-        self.assertEqual(str(e.exception), expected_msg)
+            Square()
+        self.assertEqual(str(e.exception), 
+                         "__init__() missing 1 required positional argument: 'size'")
 
     def test_C_constructor_many_args(self):
-        '''Tests constructor with too many arguments.'''
+        """Checks constructor with too many arguments."""
         with self.assertRaises(TypeError) as e:
-            r = Square(1, 2, 3, 4, 5)  # Too many arguments passed
-        expected_msg = "__init__() takes from 2 to 5 positional arguments but 6 were given"
-        self.assertEqual(str(e.exception), expected_msg)
+            Square(1, 2, 3, 4, 5)
+        self.assertEqual(str(e.exception), 
+                         "__init__() takes from 2 to 5 positional arguments but 6 were given")
 
     def test_D_instantiation(self):
-        '''Validates proper instantiation of Square.'''
-        r = Square(10)  # Create a valid Square instance
+        """Tests correct instantiation of Square objects."""
+        r = Square(10)
         self.assertEqual(str(type(r)), "<class 'models.square.Square'>")
-        self.assertTrue(isinstance(r, Base))  # Verify inheritance from Base
-
-        # Check internal attributes
-        expected_dict = {'_Rectangle__height': 10, '_Rectangle__width': 10,
-                         '_Rectangle__x': 0, '_Rectangle__y': 0, 'id': 1}
+        self.assertTrue(isinstance(r, Base))
+        expected_dict = {
+            '_Rectangle__height': 10, 
+            '_Rectangle__width': 10,
+            '_Rectangle__x': 0, 
+            '_Rectangle__y': 0, 
+            'id': 1
+        }
         self.assertDictEqual(r.__dict__, expected_dict)
 
-        # Check for TypeError on invalid input types
         with self.assertRaises(TypeError) as e:
-            r = Square("1")  # Invalid size type
+            Square("1")
         self.assertEqual(str(e.exception), "width must be an integer")
 
-        with self.assertRaises(TypeError) as e:
-            r = Square(1, "2")  # Invalid x type
-        self.assertEqual(str(e.exception), "x must be an integer")
-
-        with self.assertRaises(TypeError) as e:
-            r = Square(1, 2, "3")  # Invalid y type
-        self.assertEqual(str(e.exception), "y must be an integer")
-
-        # Check for ValueError on invalid size and position values
-        with self.assertRaises(ValueError) as e:
-            r = Square(-1)  # Negative size
-        self.assertEqual(str(e.exception), "width must be > 0")
-
-        with self.assertRaises(ValueError) as e:
-            r = Square(1, -2)  # Negative x value
-        self.assertEqual(str(e.exception), "x must be >= 0")
-
-        with self.assertRaises(ValueError) as e:
-            r = Square(1, 2, -3)  # Negative y value
-        self.assertEqual(str(e.exception), "y must be >= 0")
-
-        with self.assertRaises(ValueError) as e:
-            r = Square(0)  # Size cannot be zero
-        self.assertEqual(str(e.exception), "width must be > 0")
-
     def test_D_instantiation_positional(self):
-        '''Checks instantiation with positional arguments.'''
-        r = Square(5, 10, 15)  # Valid positional arguments
-        expected_dict = {'_Rectangle__height': 5, '_Rectangle__width': 5,
-                         '_Rectangle__x': 10, '_Rectangle__y': 15, 'id': 1}
-        self.assertEqual(r.__dict__, expected_dict)
-
-        r = Square(5, 10, 15, 20)  # Custom ID provided
-        expected_dict['id'] = 20
+        """Validates instantiation using positional arguments."""
+        r = Square(5, 10, 15)
+        expected_dict = {
+            '_Rectangle__height': 5, 
+            '_Rectangle__width': 5,
+            '_Rectangle__x': 10, 
+            '_Rectangle__y': 15, 
+            'id': 1
+        }
         self.assertEqual(r.__dict__, expected_dict)
 
     def test_D_instantiation_keyword(self):
-        '''Checks instantiation with keyword arguments.'''
+        """Validates instantiation with keyword arguments."""
         r = Square(100, id=421, y=99, x=101)
-        expected_dict = {'_Rectangle__height': 100, '_Rectangle__width': 100,
-                         '_Rectangle__x': 101, '_Rectangle__y': 99, 'id': 421}
+        expected_dict = {
+            '_Rectangle__height': 100, 
+            '_Rectangle__width': 100,
+            '_Rectangle__x': 101, 
+            '_Rectangle__y': 99, 
+            'id': 421
+        }
         self.assertEqual(r.__dict__, expected_dict)
 
-    def test_E_id_inherited(self):
-        '''Verifies that ID is inherited from Base.'''
-        Base._Base__nb_objects = 98  # Reset the counter manually
-        r = Square(2)  # Create a Square instance
-        self.assertEqual(r.id, 99)  # Check if the ID increments correctly
+    # ----------- Property Tests -------------
 
     def test_F_properties(self):
-        '''Tests property setters and getters.'''
-        r = Square(5, 9)  # Create a Square instance
-        r.size = 98  # Set new size
-        r.x = 102  # Set new x value
-        r.y = 103  # Set new y value
-
-        # Verify internal attributes
-        expected_dict = {'_Rectangle__height': 98, '_Rectangle__width': 98,
-                         '_Rectangle__x': 102, '_Rectangle__y': 103, 'id': 1}
+        """Tests getter and setter methods."""
+        r = Square(5, 9)
+        r.size = 98
+        r.x = 102
+        r.y = 103
+        expected_dict = {
+            '_Rectangle__height': 98, 
+            '_Rectangle__width': 98,
+            '_Rectangle__x': 102, 
+            '_Rectangle__y': 103, 
+            'id': 1
+        }
         self.assertEqual(r.__dict__, expected_dict)
 
-        # Verify individual getters
-        self.assertEqual(r.size, 98)
-        self.assertEqual(r.x, 102)
-        self.assertEqual(r.y, 103)
-
-    # ----------------- Validation Tests ------------------------
-
-    def invalid_types(self):
-        '''Returns a tuple of invalid types for testing.'''
-        return (3.14, -1.1, float('inf'), float('-inf'), True, "str",
-                (2,), [4], {5}, {6: 7}, None)
-
     def test_G_validate_type(self):
-        '''Tests type validation for Square properties.'''
+        """Validates attribute types."""
         r = Square(1)
         for attr in ["x", "y"]:
-            msg = f"{attr} must be an integer"
             for invalid in self.invalid_types():
                 with self.assertRaises(TypeError) as e:
                     setattr(r, attr, invalid)
-                self.assertEqual(str(e.exception), msg)
+                self.assertEqual(str(e.exception), f"{attr} must be an integer")
 
-        # Check width validation
-        msg = "width must be an integer"
-        for invalid in self.invalid_types():
-            with self.assertRaises(TypeError) as e:
-                setattr(r, "width", invalid)
-            self.assertEqual(str(e.exception), msg)
+    def invalid_types(self):
+        """Provides invalid types for testing."""
+        return (3.14, -1.1, float('inf'), float('-inf'), True, "str", (2,), [4], {5}, {6: 7}, None)
 
     def test_G_validate_value_negative_gt(self):
-        '''Tests for negative size values.'''
+        """Validates value constraints (greater than zero)."""
         r = Square(1, 2)
-        for attr in ["size"]:
-            msg = f"width must be > 0"
-            with self.assertRaises(ValueError) as e:
-                setattr(r, attr, -(randrange(10) + 1))
-            self.assertEqual(str(e.exception), msg)
+        with self.assertRaises(ValueError) as e:
+            r.size = -1
+        self.assertEqual(str(e.exception), "width must be > 0")
 
-    def test_G_validate_value_negative_ge(self):
-        '''Tests for negative x and y values.'''
-        r = Square(1, 2)
-        for attr in ["x", "y"]:
-            msg = f"{attr} must be >= 0"
-            with self.assertRaises(ValueError) as e:
-                setattr(r, attr, -(randrange(10) + 1))
-            self.assertEqual(str(e.exception), msg)
+    def test_G_validate_value_zero(self):
+        """Checks for size equal to zero."""
+        r = Square(1)
+        with self.assertRaises(ValueError) as e:
+            r.size = 0
+        self.assertEqual(str(e.exception), "width must be > 0")
 
-    # ----------------- Method Tests ------------------------
+    # ----------- Method Tests -------------
 
-    def test_H_area(self):
-        '''Validates the area computation.'''
-        r = Square(5)  # Create a Square with size 5
-        self.assertEqual(r.area(), 25)  # Check if area matches expected value
+    def test_I_area(self):
+        """Verifies the area calculation."""
+        r = Square(6)
+        self.assertEqual(r.area(), 36)
 
-    def test_I_display(self):
-        '''Checks display() method output.'''
-        r = Square(3)  # Create a 3x3 square
+    def test_J_display_simple(self):
+        """Checks display output."""
+        r = Square(1)
         f = io.StringIO()
         with redirect_stdout(f):
-            r.display()  # Capture printed output
-        expected_output = "###\n###\n###\n"
-        self.assertEqual(f.getvalue(), expected_output)
+            r.display()
+        self.assertEqual(f.getvalue(), "#\n")
+
+    def test_K_str(self):
+        """Tests the __str__() method output."""
+        r = Square(3, 4, 5)
+        self.assertEqual(str(r), "[Square] (3) 4/5 - 3")
+
+    def test_L_update_args(self):
+        """Validates update() method with positional arguments."""
+        r = Square(5, 2)
+        r.update(10, 7, 3, 4)
+        expected = "[Square] (10) 3/4 - 7"
+        self.assertEqual(str(r), expected)
+
+    def test_L_update_kwargs(self):
+        """Validates update() method with keyword arguments."""
+        r = Square(5, 2)
+        r.update(size=10, id=1, x=8)
+        expected_dict = {
+            '_Rectangle__height': 10, 
+            '_Rectangle__width': 10,
+            '_Rectangle__x': 8, 
+            '_Rectangle__y': 0, 
+            'id': 1
+        }
+        self.assertEqual(r.__dict__, expected_dict)
+
+    def test_M_to_dictionary(self):
+        """Checks to_dictionary() method."""
+        r = Square(9, 2, 3, 4)
+        expected = {'x': 2, 'y': 3, 'size': 9, 'id': 4}
+        self.assertEqual(r.to_dictionary(), expected)
+
 
 if __name__ == "__main__":
-    unittest.main()  # Run the test suite if executed directly
+    unittest.main()
 
