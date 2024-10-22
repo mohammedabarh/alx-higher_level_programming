@@ -1,0 +1,21 @@
+# .gitignore
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Temporary files
+*.swp
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
