@@ -13,11 +13,13 @@ if __name__ == "__main__":
         db=sys.argv[3]
     )
     cur = db.cursor()
+
     cur.execute("SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC")
     rows = cur.fetchall()
-    
+
     for row in rows:
-        print(row)  # No need for the additional check; the query already filters
+        if row[1].startswith('N'):
+            print(row)
 
     cur.close()
     db.close()
