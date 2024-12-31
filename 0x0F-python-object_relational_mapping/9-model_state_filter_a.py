@@ -1,13 +1,17 @@
 #!/usr/bin/python3
-"""Contains the class definition of a City"""
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
+"""Script that lists all State objects that contain the letter 'a'."""
+
+import sys
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from model_state import Base, State
 
 
-class City(Base):
-    """City class for database table cities"""
-    __tablename__ = 'cities'
-    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    name = Column(String(128), nullable=False)
-    state_id = Column(Integer, ForeignKey('states.id'), nullable=False)
+if __name__ == "__main__":
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'
+                           .format(sys.argv[1], sys.argv[2], sys.argv[3]))
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    for state in session.query(State).filter(State.name.like('%a%')).order_by(State.id):
+        print("{}: {}".format(state.id, state.name))
