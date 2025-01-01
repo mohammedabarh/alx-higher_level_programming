@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Script that prints all City objects from the database"""
+#Script that prints all City objects from the database
+
 import sys
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
