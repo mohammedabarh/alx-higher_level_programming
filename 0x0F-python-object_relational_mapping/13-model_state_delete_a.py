@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """
-Script that deletes all State objects with a name containing
-the letter a from the database
-Using module SQLAlchemy
+This script removes all State objects from the database
+whose names contain the letter 'a'.
+It utilizes the SQLAlchemy module for database interaction.
+
 """
 
 from model_state import Base, State
