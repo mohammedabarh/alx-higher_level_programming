@@ -3,7 +3,6 @@
 This script removes all State objects from the database
 whose names contain the letter 'a'.
 It utilizes the SQLAlchemy module for database interaction.
-
 """
 
 from model_state import Base, State
