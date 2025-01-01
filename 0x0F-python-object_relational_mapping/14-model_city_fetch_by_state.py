@@ -22,8 +22,8 @@ if __name__ == "__main__":
     Base.metadata.create_all(engine)
 
     # Query to join State and City, ordered by city ID
-    city = session.query(State, City).join(City).order_by(City.id)
-    for state, city in city:
+    cities = session.query(State, City).join(City).order_by(City.id)
+    for state, city in cities:
         print("{}: ({}) {}".format(state.name, city.id, city.name))
 
     # Close the session to free resources
