@@ -1,21 +1,28 @@
 #!/usr/bin/python3
-"""Script that deletes all State objects with names containing the letter 'a'."""
-import sys
+"""
+Script that deletes all State objects with a name containing
+the letter a from the database.
+Using module SQLAlchemy.
+"""
+
+from model_state import Base, State
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from model_state import Base, State
+from sys import argv
 
 if __name__ == "__main__":
-    # Set up the database connection
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'
-                           .format(sys.argv[1], sys.argv[2], sys.argv[3]))
+    # Create an engine to connect to the database
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
+        argv[1], argv[2], argv[3]), pool_pre_ping=True)
+    # Create a configured "Session" class
     Session = sessionmaker(bind=engine)
+    # Instantiate a Session
     session = Session()
-    
-    # Query for states with 'a' in their name
-    states_to_delete = session.query(State).filter(State.name.like('%a%')).all()
-    
-    # Delete the states and commit changes
-    for state in states_to_delete:
-        session.delete(state)
+    Base.metadata.create_all(engine)
+    # Query for State objects with 'a' in their name
+    state_del = session.query(State).filter(State.name.like('%a%')).all()
+    for delete in state_del:
+        session.delete(delete)
+    # Commit changes and close the session
     session.commit()
+    session.close()
