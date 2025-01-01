@@ -1,14 +1,16 @@
 #!/usr/bin/python3
-"""Contains State class and Base instance"""
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, text, ForeignKey
+from relationship_state import Base
+"""
+    Contains the class definition of a City.
+"""
 
-Base = declarative_base()
 
-class State(Base):
-    """State class"""
-    __tablename__ = 'states'
-    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+class City(Base):
+    """
+        The ``City`` class.
+    """
+    __tablename__ = 'cities'
+    id = Column(Integer, primary_key=True)
     name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state", cascade="all, delete-orphan")
+    state_id = Column(Integer, ForeignKey('states.id'), nullable=False)
