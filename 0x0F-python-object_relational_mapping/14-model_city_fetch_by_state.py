@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Fetches and displays all City objects from the database along with their states.
+Retrieves and prints all City objects from the database along with their states.
 """
 
 from model_city import City
@@ -10,17 +10,17 @@ from sqlalchemy.orm import sessionmaker
 from sys import argv
 
 if __name__ == "__main__":
-    # Create a database engine
+    # Create a database engine for connection
     engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
         argv[1], argv[2], argv[3]), pool_pre_ping=True)
 
-    # Configure a session class
+    # C Configure a session class bound to the engine
     Session = sessionmaker(bind=engine)
 
-    # Create a session instance
+    # Create a session instance for database operations
     session = Session()
 
-    # Ensure all tables are created
+    # Ensure all tables are created in the database
     Base.metadata.create_all(engine)
 
     # Query to join State and City, ordered by city ID
