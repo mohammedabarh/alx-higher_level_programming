@@ -1,23 +1,15 @@
 #!/usr/bin/python3
+"""Find a peak in a list of unsorted integers."""
+
 def find_peak(list_of_integers):
-    """
-    Find a peak in a list of unsorted integers
-    Complexity: O(log(n))
-    """
+    """Find a peak in a list of unsorted integers."""
     if not list_of_integers:
         return None
-    
-    # Binary search approach
-    left, right = 0, len(list_of_integers) - 1
-    
-    while left < right:
-        mid = (left + right) // 2
-        
-        # If mid element is smaller than its next element, peak is on the right side
+    low, high = 0, len(list_of_integers) - 1
+    while low < high:
+        mid = (low + high) // 2
         if list_of_integers[mid] < list_of_integers[mid + 1]:
-            left = mid + 1
-        # Otherwise, peak is on the left side or at mid
+            low = mid + 1
         else:
-            right = mid
-    
-    return list_of_integers[left]
+            high = mid
+    return list_of_integers[low]
