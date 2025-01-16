@@ -1,21 +1,18 @@
 #!/usr/bin/python3
-""" Finds Peak values """
+"""Finds a peak in a list of unsorted integers."""
 
 
 def find_peak(list_of_integers):
-    """Find the peak"""
+    """Finds a peak in a list of unsorted integers using binary search."""
     list_l = len(list_of_integers)
-    if list_l is 0:
+    if list_l == 0:
         return None
-    peak = binary_search(list_of_integers, 0, list_l - 1)
-    return list_of_integers[peak]
-
-
-""" binary search algorithim """
+    peak_index = binary_search(list_of_integers, 0, list_l - 1)
+    return list_of_integers[peak_index]
 
 
 def binary_search(a, lo, hi):
-    """Recursive binary search of the peak"""
+    """Recursively performs binary search to find the peak."""
     if lo >= hi:
         return lo
     mid = ((hi - lo) // 2) + lo
