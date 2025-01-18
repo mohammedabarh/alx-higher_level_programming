@@ -1,34 +1,24 @@
 #!/usr/bin/python3
-"""Sends a POST request with a letter parameter and processes the JSON response."""
-import requests
+"""Sends a POST request to http://0.0.0.0:5000/search_user with a given letter.
+
+Usage: ./8-json_api.py <letter>
+  - The letter is sent as the value of the variable `q`.
+  - If no letter is provided, sends `q=""`.
+"""
 import sys
+import requests
+
 
 if __name__ == "__main__":
-    # Define the URL
-    url = "http://0.0.0.0:5000/search_user"
-    
-    # Get the letter from command-line arguments
-    letter = sys.argv[1] if len(sys.argv) > 1 else ""
-    
-    # Prepare the data to send in the POST request
-    data = {"q": letter}
+    letter = "" if len(sys.argv) == 1 else sys.argv[1]
+    payload = {"q": letter}
 
+    r = requests.post("http://0.0.0.0:5000/search_user", data=payload)
     try:
-        # Send the POST request
-        response = requests.post(url, data=data)
-        
-        # Check if the response is valid JSON
-        try:
-            json_response = response.json()
-            
-            # Check if the JSON is not empty
-            if json_response:
-                print(f"[{json_response.get('id')}] {json_response.get('name')}")
-            else:
-                print("No result")
-        except ValueError:
-            # Handle invalid JSON
-            print("Not a valid JSON")
-    except requests.exceptions.ConnectionError:
-        # Handle connection errors
-        print("Error: Failed to connect to the server. Is it running?")
+        response = r.json()
+        if response == {}:
+            print("No result")
+        else:
+            print("[{}] {}".format(response.get("id"), response.get("name")))
+    except ValueError:
+        print("Not a valid JSON")
