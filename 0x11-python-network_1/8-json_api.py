@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     # Send a POST request to the specified URL with the payload
     r = requests.post("http://0.0.0.0:5000/search_user", data=payload)
-    
+
     try:
         # Attempt to parse the response as JSON
         response = r.json()
