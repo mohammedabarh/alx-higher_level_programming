@@ -10,15 +10,15 @@ import requests
 
 
 if __name__ == "__main__":
-    letter = "" if len(sys.argv) == 1 else sys.argv[1]  # Get the letter from command line arguments
-    payload = {"q": letter}  # Prepare the payload for the POST request
+    letter = "" if len(sys.argv) == 1 else sys.argv[1]
+    payload = {"q": letter}
 
-    r = requests.post("http://0.0.0.0:5000/search_user", data=payload)  # Send the POST request
+    r = requests.post("http://0.0.0.0:5000/search_user", data=payload)
     try:
-        response = r.json()  # Parse the JSON response
-        if response == {}:  # Check if the response is empty
-            print("No result")  # Inform the user if there are no results
+        response = r.json()
+        if response == {}:
+            print("No result")
         else:
-            print("[{}] {}".format(response.get("id"), response.get("name")))  # Display the result
+            print("[{}] {}".format(response.get("id"), response.get("name")))
     except ValueError:
-        print("Not a valid JSON")  # Handle cases where the response is not valid JSON
+        print("Not a valid JSON")
