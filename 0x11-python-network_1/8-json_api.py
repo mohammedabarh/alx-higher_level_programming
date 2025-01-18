@@ -1,33 +1,53 @@
 #!/usr/bin/python3
-"""Sends a POST request to a specified URL with a letter as a parameter.
+"""
+API User Search Utility
 
-This script sends a POST request to http://0.0.0.0:5000/search_user with a letter
-as the value of the `q` parameter. If no letter is provided, it sends an empty string.
+This script sends a POST request to a local API endpoint to search for users 
+based on a given letter. It demonstrates handling API requests, JSON parsing, 
+and basic error handling.
 
-Usage: ./8-json_api.py <letter>
-  - The letter is passed as the value of the `q` parameter.
-  - If no letter is provided, the script defaults to `q=""`.
+Features:
+- Sends a search query to a local API endpoint
+- Supports optional letter-based searching
+- Handles different response scenarios
+- Provides user-friendly output
+
+Usage:
+    python3 6-main.py [optional_letter]
+
+Examples:
+    ./6-main.py           # Search with empty query
+    ./6-main.py a         # Search for users starting with 'a'
+    ./6-main.py 'j'       # Search for users starting with 'j'
+
+Dependencies:
+    - requests library
 """
 import sys
 import requests
 
 
 if __name__ == "__main__":
-    # Set the letter to an empty string if no argument is provided, otherwise use the provided argument
+    # Determine the search letter, defaulting to empty string if no argument
     letter = "" if len(sys.argv) == 1 else sys.argv[1]
+    
+    # Prepare payload for API request
     payload = {"q": letter}
 
-    # Send a POST request to the specified URL with the payload
+    # Send POST request to the search endpoint
     r = requests.post("http://0.0.0.0:5000/search_user", data=payload)
-
+    
     try:
-        # Attempt to parse the response as JSON
+        # Attempt to parse JSON response
         response = r.json()
+        
+        # Handle different response scenarios
         if response == {}:
             print("No result")
         else:
-            # Print the ID and name from the JSON response
+            # Display user ID and name if result exists
             print("[{}] {}".format(response.get("id"), response.get("name")))
+    
     except ValueError:
-        # Handle the case where the response is not valid JSON
+        # Handle invalid JSON response
         print("Not a valid JSON")
