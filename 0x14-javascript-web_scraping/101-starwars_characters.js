@@ -3,6 +3,12 @@
 const request = require('request');
 
 const movieId = process.argv[2];
+
+if (!movieId) {
+  console.error('Please provide the movie ID as an argument.');
+  process.exit(1);
+}
+
 const apiUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}`;
 
 request.get(apiUrl, (error, response, body) => {
