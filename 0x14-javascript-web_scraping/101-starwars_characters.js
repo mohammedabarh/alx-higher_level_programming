@@ -17,20 +17,28 @@ request.get(apiUrl, (error, response, body) => {
   } else {
     const movie = JSON.parse(body);
     const characters = movie.characters;
-    const names = [];
 
-    characters.forEach((characterUrl, index) => {
-      request.get(characterUrl, (charError, charResponse, charBody) => {
-        if (charError) {
-          console.error(charError);
-        } else {
-          const character = JSON.parse(charBody);
-          names[index] = character.name;
-          if (names.length === characters.length) {
-            names.forEach(name => console.log(name));
+    // Create an array of promises for each character request
+    const promises = characters.map(characterUrl => {
+      return new Promise((resolve, reject) => {
+        request.get(characterUrl, (charError, charResponse, charBody) => {
+          if (charError) {
+            reject(charError);
+          } else {
+            const character = JSON.parse(charBody);
+            resolve(character.name);
           }
-        }
+        });
       });
     });
+
+    // Wait for all promises to resolve and then print the names
+    Promise.all(promises)
+      .then(names => {
+        names.forEach(name => console.log(name));
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 });
