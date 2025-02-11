@@ -1,20 +1,19 @@
 #!/usr/bin/node
-
+// Number of films with the given character ID
 const request = require('request');
 
 const apiUrl = process.argv[2];
-
-if (!apiUrl) {
-  console.error('Please provide the API URL as an argument.');
-  process.exit(1);
-}
 
 request.get(apiUrl, (error, response, body) => {
   if (error) {
     console.error(error);
   } else {
-    const films = JSON.parse(body).results;
-    const wedgeFilms = films.filter(film => film.characters.includes('https://swapi-api.alx-tools.com/api/people/18/'));
-    console.log(wedgeFilms.length);
+    const content = JSON.parse(body);
+    const filmsWithCharacter = content.results.filter((film) => {
+      return film.characters.some((characterUrl) => {
+        return characterUrl.endsWith('/18/');
+      });
+    });
+    console.log(filmsWithCharacter.length);
   }
 });
